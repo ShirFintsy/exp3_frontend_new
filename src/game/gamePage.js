@@ -35,6 +35,7 @@ function GamePage() {
     const [helpArray, setHelpArray] = useState([]);
     const [clickedNext, setClickedNext] = useState(false);
     const [name, setName] = useState("");
+    const [firstHelp, setFirstHelp] = useState(true);
 
     /**
      * Send a help request after getting 60 or 85 classifications or notify when game ended
@@ -129,10 +130,6 @@ function GamePage() {
      * Notify the server about the end of the game in current user.
      */
     const onCompleteGame = () => {
-        // let array = [];
-        // if (clickedYes === 2) {array = [1,2]; }
-        // else if (clickedYes === 1 && helpedOnFirst === true) { array = [1];}
-        // else if (clickedYes === 1 && helpedOnFirst === false) { array = [2];}
         websocket.send(JSON.stringify({"action": "complete-game", "help-array": helpArray, "session": session}));
         setCompleteGame(true);
     };
@@ -178,8 +175,9 @@ function GamePage() {
      * Notify the user that Alex is helping the robot
      */
     const otherUserHelps = () => {
-        setHelpRequest(false);
-        setRobot("\n");
+        // addFakeHelp(timesFakeHelp + 1);
+        //setHelpRequest(false);
+        //setRobot("\n");
         setTimeout(() => {
             setAlexHelp(true);
             setImgSrc("man_and_robot.png");
@@ -201,16 +199,14 @@ function GamePage() {
      * other user's task.
      */
     const onHelpAnswer = () => {
+        if (firstHelp) {
+            //todo: new model or block in the middle
+        }
         if (score === 19) {setHelpArray(oldArray => [...oldArray, 1]);}
         if (score === 31) {setHelpArray(oldArray => [...oldArray, 2]);}
         if (score === 50) {setHelpArray(oldArray => [...oldArray, 3]);}
         if (score === 66) {setHelpArray(oldArray => [...oldArray, 4]);}
         //if (score === 19 || score === 31 || score === 50 || score === 58) {
-        // if (firstHelp) { // this is the first help
-        //     setFirstHelp(false);
-        //     setHelpedOnFirst(true);
-        // }
-        //setHelpRequest(false);
         setClickedNext(false);
         setQuiz(true);
         setRobot("");
@@ -231,12 +227,12 @@ function GamePage() {
         setClickedNext(false);
         setRobot("");
         setImgSrc("radio-bot-animated.gif");
+        // if (timesFakeHelp < 2) { otherUserHelps(); }
     }
 
     const firstModel = () => {
          setHelpRequest(false);
          setClickedNext(true);
-         console.log("clicked next is true");
      }
 
     return (
@@ -250,10 +246,12 @@ function GamePage() {
                                 <div className={"participants-view-div"}>
                                     <div className={"virtual-player-status-div"}>
                                         {/* The model is the popup for the help request*/}
-                                        <HelpRequests openWhen={needsHelp} onHelpAnswer={firstModel} firstHelp={true}
+                                        <HelpRequests openWhen={needsHelp} onHelpAnswer={firstModel} counter={1}
                                                       name={name} handleClose={""}/>
-                                        <HelpRequests openWhen={clickedNext} onHelpAnswer={onHelpAnswer} firstHelp={false}
-                                                      handleClose={handleClose} name={"shir"}/>
+                                        <HelpRequests openWhen={clickedNext} onHelpAnswer={onHelpAnswer} counter={2}
+                                                      handleClose={handleClose} name={""}/>
+                                        <HelpRequests openWhen={needsHelp} onHelpAnswer={firstModel} counter={3}
+                                                      name={name} handleClose={""}/>
 
                                     </div>
                                     {/* The left-down side of the screen, presenting the other user gif and his current
