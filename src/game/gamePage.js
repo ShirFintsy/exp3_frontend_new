@@ -35,7 +35,7 @@ function GamePage() {
     const [helpArray, setHelpArray] = useState([]);
     const [clickedNext, setClickedNext] = useState(false);
     const [name, setName] = useState("");
-    const [firstHelp, setFirstHelp] = useState(true);
+    const [counter, setCounter] = useState(2);
 
     /**
      * Send a help request after getting 60 or 85 classifications or notify when game ended
@@ -101,7 +101,7 @@ function GamePage() {
      * Notify the server when current user click "yes" on the help request.
      */
     useEffect(() => {
-        // websocket.send(JSON.stringify({"action": "helps", "firstHelp": helpedOnFirst, "session": session}));
+        // websocket.send(JSON.stringify({"action": "helps", "counter": helpedOnFirst, "session": session}));
         websocket.send(JSON.stringify({"action": "update-click-counter", "yes": clickedYes, "session": session}));
     }, [clickedYes, websocket, session]);
 
@@ -199,8 +199,9 @@ function GamePage() {
      * other user's task.
      */
     const onHelpAnswer = () => {
-        if (firstHelp) {
-            //todo: new model or block in the middle
+        if (counter === 3) {
+            setClickedNext(false);
+            return;
         }
         if (score === 19) {setHelpArray(oldArray => [...oldArray, 1]);}
         if (score === 31) {setHelpArray(oldArray => [...oldArray, 2]);}
@@ -233,6 +234,11 @@ function GamePage() {
     const firstModel = () => {
          setHelpRequest(false);
          setClickedNext(true);
+         if (counter === 2) {
+            //todo: new model or block in the middle
+             //todo: other condition- only for the first one
+            setCounter(3);
+        } else { setCounter(2); }
      }
 
     return (
@@ -248,10 +254,8 @@ function GamePage() {
                                         {/* The model is the popup for the help request*/}
                                         <HelpRequests openWhen={needsHelp} onHelpAnswer={firstModel} counter={1}
                                                       name={name} handleClose={""}/>
-                                        <HelpRequests openWhen={clickedNext} onHelpAnswer={onHelpAnswer} counter={2}
+                                        <HelpRequests openWhen={clickedNext} onHelpAnswer={onHelpAnswer} counter={counter}
                                                       handleClose={handleClose} name={""}/>
-                                        <HelpRequests openWhen={needsHelp} onHelpAnswer={firstModel} counter={3}
-                                                      name={name} handleClose={""}/>
 
                                     </div>
                                     {/* The left-down side of the screen, presenting the other user gif and his current

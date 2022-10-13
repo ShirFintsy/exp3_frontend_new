@@ -15,10 +15,10 @@ function HelpRequests({counter, openWhen, handleClose, onHelpAnswer, name}) {
                 </Modal.Header>
                 <Modal.Body>{counter === 1  || counter === 2 ?
                     <> {counter === 1 ? firstHelpModel : secHelpModel} </> :  /*counter is 1 or 2*/
-                    <> </> /*counter is 3*/
+                    <> {trdHelpModel}</> /*counter is 3*/
                 }</Modal.Body>
                 <Modal.Footer>
-                    {counter === 1 ?
+                    {counter !== 2 ?
                         <Button variant="primary" onClick={onHelpAnswer}>
                         Next
                         </Button>:
