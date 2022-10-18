@@ -2,7 +2,7 @@
     margin-top: 20px;
     display: flex;
     flex-direction: row;
-    height: 90vh;
+    height: 100%;
 }
 
 .cls-page-col-1 {
@@ -16,6 +16,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    height: 90vh;
 }
 
 .img-to-cls {
@@ -177,15 +178,16 @@
 }
 
 .robot-text {
-    font-size: 35px;
+     font-size: 25px;
     /*float: right;*/
     margin-top: 40px;
 }
 
 .human-text {
-    font-size: 35px;
+    font-size: 25px;
     float: right;
     margin-top: 40px;
+    margin-right: 40px;
 }
 
 .robot-pic {
@@ -197,7 +199,7 @@
 }
 
 .Alex-pic {
-    width: 150px;
+    width: 100px;
     height: auto;
     display: inline-block;
     border-radius: 50%;

@@ -175,23 +175,25 @@ function GamePage() {
      * Notify the user that Alex is helping the robot
      */
     const otherUserHelps = () => {
-        // addFakeHelp(timesFakeHelp + 1);
-        //setHelpRequest(false);
-        //setRobot("\n");
-        setTimeout(() => {
-            setAlexHelp(true);
-            setImgSrc("man_and_robot.png");
-            setHuman("Alex is helping the robot");
-
-        },2000);
+        setAlexHelp(true);
+        setImgSrc("man_and_robot.png");
+        setHuman("Alex is helping the robot");
+        setRobot("");
+        setAlexImgSrc("white.png");
+        // setTimeout(() => {
+        //     setAlexHelp(true);
+        //     setImgSrc("man_and_robot.png");
+        //     setHuman("Alex is helping the robot");
+        //
+        // },2000);
 
         setTimeout(() => {
             setRobot("Robot is currently classifying pictures");
             setHuman("Alex is classifying pictures");
-            // setAlexImgSrc("man.gif");
+            setAlexImgSrc("man.gif");
             setImgSrc("radio-bot-animated.gif");
             setAlexHelp(false);
-        }, 17000);
+        }, 12000);
     }
 
     /**
@@ -201,6 +203,7 @@ function GamePage() {
     const onHelpAnswer = () => {
         if (counter === 3) {
             setClickedNext(false);
+            otherUserHelps();
             return;
         }
         if (score === 19) {setHelpArray(oldArray => [...oldArray, 1]);}
@@ -265,7 +268,7 @@ function GamePage() {
                                         <img src={robotImgSrc} alt={"robot-pic"} className={"robot-pic"}/>
                                         <div className={AlexHelp ? null : "participants-view-div"}></div>
                                         <div className={"Alex-part"}>
-                                            <img src={"man.gif"} alt={"Alex-pic"} className={"Alex-pic"}/>
+                                            <img src={AlexImgSrc} alt={"Alex-pic"} className={"Alex-pic"}/>
                                             <div className={"human-text"}>{humanRunning}</div>
                                         </div>
                                     </div>
